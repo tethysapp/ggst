@@ -1,0 +1,38 @@
+{% set data = load_setup_py_data(setup_file='../setup.py', from_recipe_dir=True) %}
+{% set name = data.get('name')|replace("tethysapp-", "")|lower %}
+
+package:
+  name: {{ name }}
+  version: {{ data.get('version') }}
+
+about:
+  author: {{ data.get('author')}}
+  description: {{ data.get('description')}}
+  license: "{'name': 'release_package', 'version': '0.0.1', 'description': 'Visualize and subset Grace data', 'long_description': '', 'author': 'Sarva Pulla', 'author_email': 'pulla@byu.edu', 'url': '', 'license': 'MIT', 'app_package': 'ggst', 'tethys_version': '>=4.0.0', 'dev_url': 'https://github.com/Aquaveo/ggst'}"
+  dev_url: {{ data.get('dev_url') }}
+
+outputs:
+  - name: {{ name }}
+extra:
+  author_email: pulla@byu.edu
+  keywords: []
+  recipe-maintainers:
+  - TethysAppWarehouse
+
+build:
+  noarch: python
+  preserve_egg_dir: true
+  script: python setup.py install --record=record.txt
+requirements:
+  build:
+  - python
+  run:
+  - geopandas
+  - shapely
+  - xarray
+  - rioxarray
+  - netCDF4
+  - geopandas
+  - numpy=1.21
+source:
+  path: ..
